@@ -18,41 +18,36 @@ HTML містить розмітку форми, в поля якої корис
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 const form = document.querySelector('.form');
-const refs = {
-  amount: document.querySelector('input[name=amount]'),
-  delay: document.querySelector('input[name=delay]'),
-  step: document.querySelector('input[name=step]'),
-  submit: document.querySelector('button'),
-};
+const amount = document.querySelector('input[name=amount]');
+const delay = document.querySelector('input[name=delay]');
+const step = document.querySelector('input[name=step]');
 
-form.addEventListener('input', onFormTextFieldInput);
-form.addEventListener('submit', (event) => {
+form.addEventListener('submit', onFormSubmit);
+
+function onFormSubmit(event) {
   event.preventDefault();
-    runFunctionXTimes(createPromise, refs.step.value, refs.amount.value);
+  let repeated = 0;
+  const intervalTask = setInterval(doTask, step.value);
 
-})
-
-function onFormTextFieldInput(event) {
-  
-}
-
-  function runFunctionXTimes(callback, interval, repeatTimes) {
-    let repeated = 0;
-    const intervalTask = setInterval(doTask, interval);
-
-    function doTask() {
-      if (repeated < repeatTimes) {
-        callback();
-        repeated += 1;
-      } else {
-        clearInterval(intervalTask);
-      }
+  function doTask() {
+    if (repeated < amount.value) {
+      createPromise(repeated, delay.value)
+        .then(({ position, delay }) => {
+          Notify.success(`✅ Fulfilled promise ${position} in ${delay}ms`);
+        })
+        .catch(({ position, delay }) => {
+          Notify.failure(`❌ Rejected promise ${position} in ${delay}ms`);
+        });
+      repeated += 1;
+    } else {
+      clearInterval(intervalTask);
     }
-  } 
+  }
+}
 
 function createPromise(position, delay) {
   const shouldResolve = Math.random() > 0.3;
-  const promise = new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     setTimeout(() => {
       if (shouldResolve) {
         // Fulfill
@@ -63,13 +58,4 @@ function createPromise(position, delay) {
       }
     }, delay);
   });
-  return promise;
 }
-
-createPromise(2, 1500)
-  .then(({ position, delay }) => {
-    Notify.success(`✅ Fulfilled promise ${position} in ${delay}ms`);
-  })
-  .catch(({ position, delay }) => {
-    Notify.failure(`❌ Rejected promise ${position} in ${delay}ms`);
-  });
