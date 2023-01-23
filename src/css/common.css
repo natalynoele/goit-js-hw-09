@@ -17,6 +17,27 @@ img {
   max-width: 100%;
 }
 
+input{
+  margin: 10px;
+  padding: 10px;
+  font-size: 25px;
+  border-radius: 10px;
+}
+
+label {
+  font-size: 25px;
+  color: rgb(12, 12, 77);
+}
+
+.submit {
+  padding: 10px;
+background: rgb(21, 103, 5);
+border: none;
+border-radius: 10px;
+font-size: 25px;
+color: white;
+}
+
 #datetime-picker {
   margin-bottom: 20px;
   padding: 10px 15px;
@@ -25,15 +46,6 @@ img {
   border-radius: 15px;
   font-size: 40px;
   color: skyblue;
-}
-
-button {
-  padding: 10px 15px;
-  border: none;
-  border-radius: 15px;
-  background-color: lightskyblue;
-  font-size: 40px;
-  color: white;
 }
 
 .timer {
@@ -58,3 +70,20 @@ button {
   font-size: 20px;
   text-transform: uppercase;
 }
+
+.start-timer {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 15px;
+  background-color: lightskyblue;
+  font-size: 40px;
+  color: white;
+}
+.start-timer:hover{
+  background-color: rgb(81, 179, 240)
+}
+
+.start-timer:disabled{
+  background: rgb(160, 158, 158);
+}
+

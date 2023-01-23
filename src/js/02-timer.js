@@ -1,15 +1,3 @@
-/*
-Виконуй це завдання у файлах 02-timer.html і 02-timer.js.
- Напиши скрипт таймера, який здійснює зворотний відлік до 
- певної дати. Такий таймер може використовуватися у блогах та 
- інтернет-магазинах, сторінках реєстрації подій, під час 
- технічного обслуговування тощо. 
-Подивися демо-відео роботи таймера.
-
-HTML містить готову розмітку таймера, поля вибору кінцевої дати і 
-кнопку, по кліку на яку, таймер повинен запускатися.
- Додай мінімальне оформлення елементів інтерфейсу.
-*/
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.min.css';
 import { Notify } from 'notiflix/build/notiflix-notify-aio';
@@ -29,7 +17,7 @@ const options = {
   minuteIncrement: 1,
   onClose(selectedDates) {
     if (isPastDate(selectedDates[0])) {
-      Notify.failure('Qui timide rogat docet negare');
+      Notify.failure('Please choose a date in the future');
       startBtn.disabled = true;
     } else {
       startBtn.disabled = false;
@@ -37,11 +25,10 @@ const options = {
   },
 };
 const calendar = flatpickr(dateTimePicker, options);
-
-const selectedDate = calendar.selectedDates[0];
-
 let timerId;
+let isTimerRun = true;
 
+startBtn.classList.add('start-timer');
 startBtn.addEventListener('click', onStartBtnClick);
 
 function onStartBtnClick() {
@@ -52,14 +39,29 @@ function onStartBtnClick() {
 
 function countDownTimeToSelectedDate() {
   const now = Date.now();
-  const diff = calendar.selectedDates[0] - Date.now();
+  const diff = calendar.selectedDates[0] - now; 
   const remainTime = convertMs(diff);
   startBtn.disabled = false;
-  daysEl.textContent = `${remainTime.days}`;
-  hoursEl.textContent = `${remainTime.hours}`;
-  minutesEl.textContent = `${remainTime.minutes}`;
-  secondsEl.textContent = `${remainTime.seconds}`;
+  daysEl.textContent = `${addLeadingZero(remainTime.days)}`;
+  hoursEl.textContent = `${addLeadingZero(remainTime.hours)}`;
+  minutesEl.textContent = `${addLeadingZero(remainTime.minutes)}`;
+  secondsEl.textContent = `${addLeadingZero(remainTime.seconds)}`;
+  console.log(diff);
+  if (diff <= 0) {
+    stopInterval();
+    daysEl.textContent = '00';
+    hoursEl.textContent = '00';
+    minutesEl.textContent = '00';
+    secondsEl.textContent = '00';
+    Notify.success('The great day has arrived');
+  }
 }
+
+function stopInterval() {
+  isTimerRun = false;
+  clearInterval(timerId);  
+}
+
 
 function convertMs(ms) {
   // Number of milliseconds per unit of time
@@ -77,4 +79,11 @@ function convertMs(ms) {
   const seconds = Math.floor((((ms % day) % hour) % minute) / second);
   // console.log({ days, hours, minutes, seconds });
   return { days, hours, minutes, seconds };
+}
+
+function addLeadingZero(value) {
+  if (value < 10) {
+    value = value.toString().padStart(2, '0');
+  }
+  return value;
 }
