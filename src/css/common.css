@@ -16,7 +16,6 @@ img {
   display: block;
   max-width: 100%;
 }
-
 input{
   margin: 10px;
   padding: 10px;
@@ -87,3 +86,26 @@ color: white;
   background: rgb(160, 158, 158);
 }
 
+.switcher-start {
+  padding: 15px;
+  border:  none;
+  border-radius: 15px;
+  background: rgb(6, 168, 149);
+  color: white;
+  font-size: 25px;
+}
+
+.switcher-start:hover{
+  background: rgb(4, 105, 61);
+}
+.switcher-stop {
+  padding: 15px;
+  border:  none;
+  border-radius: 15px;
+  background: rgb(238, 165, 38);
+  color: white;
+  font-size: 25px;
+}
+.switcher-start:disabled, .switcher-stop:disabled{
+  background: rgb(140, 139, 139);
+}
