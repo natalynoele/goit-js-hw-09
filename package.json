@@ -1,7 +1,7 @@
 {
   "name": "goit-js-hw-09",
   "version": "2.0.0",
-  "description": "",
+  "description": "Homework 9: color-switcher, timer, promises",
   "homepage": "https://natalynoele.github.io/goit-js-hw-09",
   "scripts": {
     "start": "parcel src/*.html",
