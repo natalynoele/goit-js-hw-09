@@ -33,6 +33,7 @@ startBtn.addEventListener('click', onStartBtnClick);
 function onStartBtnClick() {
   if (!timerId) {
     timerId = setInterval(countDownTimeToSelectedDate, 1000);
+    startBtn.disabled = true;
   }
 }
 
@@ -40,7 +41,7 @@ function countDownTimeToSelectedDate() {
   const now = Date.now();
   const diff = calendar.selectedDates[0] - now; 
   const remainTime = convertMs(diff);
-  
+
   startBtn.disabled = false;
 
   daysEl.textContent = `${addLeadingZero(remainTime.days)}`;
