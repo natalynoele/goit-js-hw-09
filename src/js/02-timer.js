@@ -26,7 +26,6 @@ const options = {
 };
 const calendar = flatpickr(dateTimePicker, options);
 let timerId;
-let isTimerRun = true;
 
 startBtn.classList.add('start-timer');
 startBtn.addEventListener('click', onStartBtnClick);
@@ -41,12 +40,14 @@ function countDownTimeToSelectedDate() {
   const now = Date.now();
   const diff = calendar.selectedDates[0] - now; 
   const remainTime = convertMs(diff);
+  
   startBtn.disabled = false;
+
   daysEl.textContent = `${addLeadingZero(remainTime.days)}`;
   hoursEl.textContent = `${addLeadingZero(remainTime.hours)}`;
   minutesEl.textContent = `${addLeadingZero(remainTime.minutes)}`;
   secondsEl.textContent = `${addLeadingZero(remainTime.seconds)}`;
-  console.log(diff);
+  
   if (diff <= 0) {
     stopInterval();
     daysEl.textContent = '00';
