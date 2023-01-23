@@ -60,8 +60,7 @@ function countDownTimeToSelectedDate() {
 }
 
 function stopInterval() {
-  isTimerRun = false;
-  clearInterval(timerId);  
+   clearInterval(timerId);  
 }
 
 
