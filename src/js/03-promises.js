@@ -11,12 +11,15 @@ form.addEventListener('submit', onFormSubmit);
 
 function onFormSubmit(event) {
   event.preventDefault();
-  let repeated = 0;
+  let repeated = 1;
   const intervalTask = setInterval(doTask, step.value);
-
   function doTask() {
-    if (repeated < amount.value) {
-      createPromise(repeated, delay.value)
+    let promiseDelay = Number(delay.value);
+    if (repeated <= amount.value) {
+      if (repeated > 1){
+        promiseDelay += Number(step.value) * (repeated - 1);
+      }
+      createPromise(repeated, promiseDelay)
         .then(({ position, delay }) => {
           Notify.success(`✅ Fulfilled promise ${position} in ${delay}ms`);
         })
