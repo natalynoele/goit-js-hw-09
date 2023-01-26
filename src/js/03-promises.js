@@ -11,26 +11,8 @@ form.addEventListener('submit', onFormSubmit);
 
 function onFormSubmit(event) {
   event.preventDefault();
-  let repeated = 1;
-  const intervalTask = setInterval(doTask, step.value);
-  function doTask() {
-    let promiseDelay = Number(delay.value);
-    if (repeated <= amount.value) {
-      if (repeated > 1){
-        promiseDelay += Number(step.value) * (repeated - 1);
-      }
-      createPromise(repeated, promiseDelay)
-        .then(({ position, delay }) => {
-          Notify.success(`✅ Fulfilled promise ${position} in ${delay}ms`);
-        })
-        .catch(({ position, delay }) => {
-          Notify.failure(`❌ Rejected promise ${position} in ${delay}ms`);
-        });
-      repeated += 1;
-    } else {
-      clearInterval(intervalTask);
-    }
-  }
+ createPromiseXTimes();
+  
 }
 
 function createPromise(position, delay) {
@@ -45,5 +27,35 @@ function createPromise(position, delay) {
         reject({ position, delay });
       }
     }, delay);
+    // console.log(delay);
   });
+}
+
+function createPromiseXTimes() {
+  let repeated = 1;
+  let intervalStep;  
+  const intervalTask = setInterval(doTask, intervalStep);
+  
+  function doTask() {
+    let promiseDelay = Number(delay.value);
+    if (repeated <= amount.value) {
+      repeated === 1
+        ? intervalStep = promiseDelay
+        : intervalStep = step.value;
+      if (repeated > 1) {
+        promiseDelay += intervalStep * (repeated - 1);
+      }
+      createPromise(repeated, promiseDelay)
+        .then(({ position, delay }) => {
+          // console.log('delay: ', delay);
+          Notify.success(`✅ Fulfilled promise ${position} in ${delay}ms`);
+        })
+        .catch(({ position, delay }) => {
+          Notify.failure(`❌ Rejected promise ${position} in ${delay}ms`);
+        });
+      repeated += 1;
+    } else {
+      clearInterval(intervalTask);
+    }
+  }
 }
